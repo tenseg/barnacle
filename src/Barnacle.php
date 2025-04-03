@@ -69,31 +69,36 @@ class Barnacle
         }
 
         $html = <<<HTML
-			<style>
-				#barnacle {
-					font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-					font-size: 12px;
-					position: fixed;
-					top: 0;
-					right: 0;
-					z-index: 999999;
-					display: flex;
-					gap: 1px;
-				}
+            <style>
+                #barnacle {
+                    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                    font-size: 12px;
+                    position: fixed;
+                    top: 0;
+                    right: 0;
+                    z-index: 999999;
+                    display: flex;
+                    gap: 1px;
+                }
 
-				#barnacle .barnacle-component {
-					display: block;
-					padding: 5px 10px;
-					background-color: #000;
-					color: #fff;
-				}
-				
-				#barnacle a.barnacle-component:hover {
-					background-color: #888;
-				}
-			</style>
-			<div id="barnacle" data-version="{$this->getVersion()}">$components</div>
-		HTML;
+                #barnacle .barnacle-component {
+                    display: block;
+                    padding: 5px 10px;
+                    background-color: #000;
+                    color: #fff;
+                    cursor: default;
+                }
+                
+                #barnacle a.barnacle-component {
+                    cursor: pointer;
+                }
+                
+                #barnacle a.barnacle-component:hover {
+                    background-color: #888;
+                }
+            </style>
+            <div id="barnacle" data-version="{$this->getVersion()}">$components</div>
+        HTML;
 
         return $html;
     }

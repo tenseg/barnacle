@@ -1,4 +1,4 @@
-{{# vscode://file/Users/efc/Herd/v4/resources/views/home.antlers.html #}}
+{{ if barnacle.options.file_scheme && barnacle.initial_path }}
 <a
   href="{{ barnacle.options.file_scheme }}{{ barnacle.initial_path }}"
   class="barnacle-component"
@@ -20,3 +20,4 @@
     />
   </svg>
 </a>
+{{ /if}}
