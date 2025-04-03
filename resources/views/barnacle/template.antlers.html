@@ -2,8 +2,7 @@
 $base = resource_path('views') . "/$template" ?}} {{? $path =
 file_exists("$base.antlers.html") ? "$base.antlers.html" :
 (file_exists("$base.antlers.php") ? "$base.antlers.php" :
-(file_exists("$base.blade.php") ? "$base.blade.php" : "")) ?}} {{? ds($base,
-$path) ?}} {{ if $path }}
+(file_exists("$base.blade.php") ? "$base.blade.php" : "")) ?}} {{ if $path }}
 <a
   href="{{ barnacle.options.file_scheme }}{{ $path }}"
   class="barnacle-component"

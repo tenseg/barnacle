@@ -1,18 +1,18 @@
 <?php
-	$color = "#000000";
+	$style = "";
 	$branch = "—";
 	$git_file = base_path() . "/.git/HEAD";
 	if (file_exists($git_file)) {
 		if ($gitinfo = file($git_file)) {
-			$color = "#FF88FF";
+			$style = "background-color: #FF88FF; color: #000000; font-weight: 900;";
 			$exp = explode("/", $gitinfo[0], 3);
 			$branch = trim( $exp[2] );
 			if ($branch == "main") {
-				$color = "#88EEAA";
+				$style = "background-color: #44CC66; color: #000000; font-weight: 900;";
 			}
 		}
 	}
 ?>
-<div class="barnacle-component" style="background-color: <?php echo $color ?>">
+<div class="barnacle-component" style="<?php echo $style ?>">
   <?php echo $branch ?>
 </div>
