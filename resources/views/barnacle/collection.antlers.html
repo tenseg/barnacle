@@ -1,0 +1,6 @@
+{{? $link = cp_route('', ['id' => 'x']) ?}}
+<a
+  href="{{ $link | replace( 'edit/x', 'collections/{{collection}}') }}"
+  class="barnacle-component"
+  >C {{collection}}</a
+>

@@ -1,0 +1,14 @@
+{{# vscode://file/Users/efc/Herd/v4/resources/views/home.antlers.html #}} {{?
+$base = resource_path('views') . "/$template" ?}} {{? $path =
+file_exists("$base.antlers.html") ? "$base.antlers.html" :
+(file_exists("$base.antlers.php") ? "$base.antlers.php" :
+(file_exists("$base.blade.php") ? "$base.blade.php" : "")) ?}} {{? ds($base,
+$path) ?}} {{ if $path }}
+<a
+  href="{{ barnacle.options.file_scheme }}{{ $path }}"
+  class="barnacle-component"
+  >T {{template}}</a
+>
+{{ else }}
+<div class="barnacle-component">T {{template}}</div>
+{{ /if }}

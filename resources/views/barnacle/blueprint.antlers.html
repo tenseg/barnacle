@@ -1,0 +1,7 @@
+{{# https://v4.test/cp/collections/pages/blueprints/page/edit #}} {{? $link =
+cp_route('', ['id' => 'x']) ?}}
+<a
+  href="{{ $link | replace( 'edit/x', 'collections/{{collection}}/blueprints/{{blueprint}}/edit') }}"
+  class="barnacle-component"
+  >B {{blueprint}}</a
+>

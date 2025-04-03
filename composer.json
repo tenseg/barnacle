@@ -1,0 +1,40 @@
+{
+    "name": "tenseg/barnacle",
+    "version": "dev-main",
+    "autoload": {
+        "psr-4": {
+            "Tenseg\\Barnacle\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tenseg\\Barnacle\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "statamic/cms": "^5.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0",
+        "laravel/pint": "^1.21",
+        "laradumps/laradumps": "^4.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Barnacle",
+            "description": "Barnacle addon"
+        },
+        "laravel": {
+            "providers": [
+                "Tenseg\\Barnacle\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

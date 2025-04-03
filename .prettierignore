@@ -1,0 +1,9 @@
+**/*.md
+**/*.yaml
+**/*.json
+**/.git
+**/vendor
+**/node_modules
+**/public
+**/storage
+resources/views/pins/_special_characters.antlers.html
