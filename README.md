@@ -20,3 +20,8 @@ composer require tenseg/barnacle
 
 Publish the configuration and templates. Play on!
 
+## Credits
+
+This addon was inspired by both the [Statamic Toolbar](https://statamic.com/addons/heidkaemper/toolbar) addon and the [Admin Bar](https://statamic.com/addons/el-schneider/admin-bar) addon. Both of those are wonderful and worthy of you consideration before you decide to adopt Barnacle.
+
+The icons are from [Iconoir at Iconify](https://icon-sets.iconify.design/iconoir/) by Luca Burgio and made available with an MIT license.
