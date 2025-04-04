@@ -3,6 +3,7 @@
 namespace Tenseg\Barnacle;
 
 use Composer\InstalledVersions;
+use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Preference;
 use Statamic\Facades\Site;
@@ -11,6 +12,30 @@ use Symfony\Component\HttpFoundation\Response;
 class Barnacle
 {
     protected $extensions = [];
+
+    protected static $barnacle = [];
+
+    public function __construct()
+    {
+        if (empty(self::$barnacle)) {
+            // doing this here once as static, since this class seems to be instantiated
+            // more than once (even though it is instantiated only once, from injectBarnacle)
+            $url = app('request')->url();
+            $path = $this->ensureLeadingSlash(app('request')->uri()->path());
+            $site = Site::findByUrl($url);
+            $entry = Entry::findByUri($path, $site);
+            self::$barnacle = [
+                'url' => $url,
+                'path' => $path,
+                'site' => $site,
+                'entry' => $entry,
+                'initial_path' => $entry->path(),
+                'collections' => $this->getCollections($site),
+                'options' => config('barnacle.options'),
+                'version' => $this->getVersion(),
+            ];
+        }
+    }
 
     public function isEnabled(): bool
     {
@@ -45,26 +70,67 @@ class Barnacle
         return InstalledVersions::getPrettyVersion('tenseg/barnacle');
     }
 
+    protected function getCollections($site): array
+    {
+        if (! $user = auth()->user()) {
+            return [];
+        }
+        $collections = Collection::all()
+            ->filter(fn ($collection) => $user->can('view '.$collection->handle().' entries'))
+            ->reduce(function ($carry, $collection) use ($site, $user) {
+                $handle = $collection->handle();
+
+                if ($carry === null) {
+                    $carry = [];
+                }
+
+                $blueprints = $user->can("create $handle entries")
+                    ? $collection->entryBlueprints()
+                        ->select('title', 'handle')
+                        ->map(fn ($blueprint) => [
+                            'name' => $blueprint['title'].' to '.$collection->title,
+                            'url' => cp_route('collections.entries.create', [$collection, $site, 'blueprint' => $blueprint['handle']]),
+                        ])
+                    : collect([]);
+
+                foreach ($blueprints as $item) {
+                    $carry[] = $item;
+                }
+
+                return $carry;
+            });
+
+        return $collections;
+    }
+
+    protected function ensureLeadingSlash($path)
+    {
+        if (substr($path, 0, 1) !== '/') {
+            $path = '/'.$path;
+        }
+
+        return $path;
+    }
+
     public function content(): string
     {
-        $url = app('request')->url();
-        $path = app('request')->uri()->path();
-        $site = Site::findByUrl($url);
-        $entry = Entry::findByUri($path, $site);
+
         $components = '';
         foreach (config('barnacle.components') as $component => $name) {
             $view = 'barnacle::barnacle.'.$component;
             if (view()->exists($view)) {
-                // $components .= view($view)->render();
                 $components .= (new \Statamic\View\View)
                     ->template($view)
-                    ->with(['barnacle' => [
-                        'entry' => $entry,
-                        'initial_path' => $entry->path(),
-                        'options' => config('barnacle.options'),
-                    ]])
-                    ->cascadeContent($entry)
+                    ->with(['barnacle' => self::$barnacle])
+                    ->cascadeContent(self::$barnacle['entry'])
                     ->render();
+            }
+        }
+
+        $open = 'open';
+        if (isset($_COOKIE['barnacle-hider'])) {
+            if ($_COOKIE['barnacle-hider'] !== 'open') {
+                $open = '';
             }
         }
 
@@ -79,6 +145,8 @@ class Barnacle
                     z-index: 999999;
                     display: flex;
                     gap: 1px;
+                    flex-wrap: wrap;
+                    justify-content: flex-end;
                 }
 
                 #barnacle .barnacle-component {
@@ -89,15 +157,87 @@ class Barnacle
                     cursor: default;
                 }
                 
-                #barnacle a.barnacle-component {
+                #barnacle .toggle,
+                #barnacle a[href].barnacle-component {
                     cursor: pointer;
                 }
                 
-                #barnacle a.barnacle-component:hover {
+                #barnacle .toggle:hover,
+                #barnacle a[href].barnacle-component:hover {
                     background-color: #888;
                 }
+                
+                #barnacle .barnacle-component svg {
+                    display: inline-block;
+                }
+                
+                #barnacle .hider.open svg.closed {
+                    display: none;
+                }
+                #barnacle .hider:not(.open) svg.open {
+                    display: none;
+                }
+                
+                #barnacle:has(> .hider:not(.open)) {
+                    opacity: 0;
+                    transition: opacity 300ms 700ms;
+                }
+                
+                #barnacle:hover:has(> .hider:not(.open)) {
+                    opacity: 1;
+                    transition: opacity 50ms 0ms;
+                }
+                
+                #barnacle details.barnacle-component {
+                    position: relative;
+                }
+                #barnacle details.barnacle-component .barnacle-popup {
+                    position: absolute;
+                    top: calc(100% + 1px);
+                    right: 0;
+                    background-color: #000;
+                    padding: 5px 10px;
+                }
+                
+                #barnacle details.barnacle-component > summary {
+                    list-style: none;
+                }
+                
+                #barnacle details.barnacle-component > summary::-webkit-details-marker {
+                    display: none;
+                }
+                
+                @media (max-width: 500px) {
+                    #barnacle .barnacle-label {
+                        display: none;
+                    }
+                }
             </style>
-            <div id="barnacle" data-version="{$this->getVersion()}">$components</div>
+            <div id="barnacle" data-version="{$this->getVersion()}">
+                $components
+                <a class="barnacle-component hider toggle $open" title="Toggle visibility">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="open"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M9.5 14.5L3 21M5 9.485l9.193 9.193l1.697-1.697l-.393-3.787l5.51-4.673l-5.85-5.85l-4.674 5.51l-3.786-.393z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="closed"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M9.5 14.5L3 21M7.676 7.89l-.979-.102L5 9.485l9.193 9.193l1.697-1.697l-.102-.981m-4.303-9l3.672-4.329l5.85 5.85l-4.308 3.654M3 3l18 18"/></svg>
+                </a>
+            </div>
+            <script>
+                const toggles = document.querySelectorAll('#barnacle .barnacle-component.toggle');
+                toggles.forEach(toggle => {
+                    toggle.addEventListener('click', () => {
+                        const result = toggle.classList.toggle('open');
+                        if (toggle.classList.contains('hider')) {
+                            console.log('hider hit');
+                            if (result) {
+                                document.cookie = 'barnacle-hider=open';
+                                console.log('open');
+                            } else {
+                                document.cookie = 'barnacle-hider=closed';
+                                console.log('closed');
+                            }
+                        }
+                    })
+                })
+            </script>
         HTML;
 
         return $html;

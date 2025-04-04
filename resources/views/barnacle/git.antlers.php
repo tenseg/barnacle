@@ -13,23 +13,25 @@
 		}
 	}
 ?>
-<div class="barnacle-component" style="<?php echo $style ?>">
+<a
+  class="barnacle-component"
+  style="<?php echo $style ?>"
+  title="Git <?php echo $branch ?> branch"
+>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
+    width="18"
+    height="18"
     viewBox="0 0 24 24"
-    style="display: inline-block; width: 18px"
-    aria-label="Git Branch"
   >
     <path
       fill="none"
       stroke="currentColor"
       stroke-linecap="round"
       stroke-linejoin="round"
-      stroke-width="0.9"
+      stroke-width="1.6"
       d="M17 7a2 2 0 1 0 0-4a2 2 0 0 0 0 4M7 7a2 2 0 1 0 0-4a2 2 0 0 0 0 4m0 14a2 2 0 1 0 0-4a2 2 0 0 0 0 4M7 7v10M17 7v1c0 2.5-2 3-2 3l-6 2s-2 .5-2 3v1"
     />
   </svg>
-  <?php echo $branch ?>
-</div>
+  <span class="barnacle-label"><?php echo $branch ?></span>
+</a>

@@ -1,25 +1,24 @@
 {{# https://v4.test/cp/collections/pages/blueprints/page/edit #}} {{? $link =
 cp_route('', ['id' => 'x']) ?}}
 <a
-  href="{{ $link | replace( 'edit/x', 'collections/{{collection}}/blueprints/{{blueprint}}/edit') }}"
-  class="barnacle-component"
-  title="Edit Blueprint"
+    {{ if logged_in}}
+        href="{{ $link | replace( 'edit/x', 'collections/{{collection}}/blueprints/{{blueprint}}/edit') }}"
+    {{ /if }}
+    class="barnacle-component"
+    title="Edit {{blueprint}} blueprint"
 >
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    style="display: inline-block; width: 18px"
-  >
-    <path
-      fill="none"
-      stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="0.9"
-      d="m4 16l.01-.011M4 20l.01-.011M8 20l.01-.011M12 20l.01-.011M16 20l.01-.011M20 20l.01-.011M20 16l.01-.011M4 12V4h16v8z"
-    />
-  </svg>
-  {{blueprint}}
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        >
+        <path
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        d="M3 12h18M3 12v4.5M3 12V7.5M21 12v4.5m0-4.5V7.5m-18 9v3.9a.6.6 0 0 0 .6.6h16.8a.6.6 0 0 0 .6-.6v-3.9m-18 0h18m0-9V3.6a.6.6 0 0 0-.6-.6H3.6a.6.6 0 0 0-.6.6v3.9m18 0H3"
+        />
+    </svg>
+    <span class="barnacle-label">{{blueprint}}</span>
 </a>
