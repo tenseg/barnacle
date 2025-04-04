@@ -45,6 +45,7 @@ return [
         'collection' => 'Link to collection',
         'new' => 'Create new entries',
         'git' => 'Git information',
+        'prefs' => 'Link to your preferences',
     ],
 
     /*

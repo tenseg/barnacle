@@ -5,7 +5,7 @@ namespace Tenseg\Barnacle\Controllers;
 use Illuminate\Routing\Controller;
 use Statamic\Facades\Preference;
 
-class BarnacleController extends Controller
+class BarnacleLoginController extends Controller
 {
     public function canUseCookie(): bool
     {

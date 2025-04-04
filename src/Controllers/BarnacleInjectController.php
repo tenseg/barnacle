@@ -1,14 +1,15 @@
 <?php
 
-namespace Tenseg\Barnacle;
+namespace Tenseg\Barnacle\Controllers;
 
 use Composer\InstalledVersions;
+use Illuminate\Routing\Controller;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Preference;
 use Statamic\Facades\Site;
 use Symfony\Component\HttpFoundation\Response;
 
-class Barnacle
+class BarnacleInjectController extends Controller
 {
     protected $extensions = [];
 
@@ -100,11 +101,13 @@ class Barnacle
 
     public function content(): string
     {
-
+        $user = auth()->user();
+        $hidden = Preference::get('barnacle_hidden_components', []);
+        ds(['hidden' => $hidden]);
         $components = '';
         foreach (config('barnacle.components') as $component => $name) {
             $view = 'barnacle::barnacle.'.$component;
-            if (view()->exists($view)) {
+            if (view()->exists($view) && $user->can('use barnacle component '.$component) && ! in_array($component, $hidden)) {
                 $components .= (new \Statamic\View\View)
                     ->template($view)
                     ->with(['barnacle' => self::$barnacleData])

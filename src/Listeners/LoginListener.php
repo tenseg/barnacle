@@ -3,12 +3,12 @@
 namespace Tenseg\Barnacle\Listeners;
 
 use Illuminate\Auth\Events\Login;
-use Tenseg\Barnacle\Controllers\BarnacleController;
+use Tenseg\Barnacle\Controllers\BarnacleLoginController;
 
 class LoginListener
 {
     public function __construct(
-        protected BarnacleController $controller
+        protected BarnacleLoginController $controller
     ) {}
 
     public function handle(Login $event): void

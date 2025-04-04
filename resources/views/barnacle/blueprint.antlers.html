@@ -1,5 +1,4 @@
-{{# https://v4.test/cp/collections/pages/blueprints/page/edit #}} {{? $link =
-cp_route('', ['id' => 'x']) ?}}
+{{? $link = cp_route('', ['id' => 'x']) ?}}
 <a
     {{ if logged_in}}
         href="{{ $link | replace( 'edit/x', 'collections/{{collection}}/blueprints/{{blueprint}}/edit') }}"

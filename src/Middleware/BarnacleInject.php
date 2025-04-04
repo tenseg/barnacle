@@ -4,12 +4,12 @@ namespace Tenseg\Barnacle\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Log;
-use Tenseg\Barnacle\Barnacle;
+use Tenseg\Barnacle\Controllers\BarnacleInjectController;
 
-class InjectBarnacle
+class BarnacleInject
 {
     public function __construct(
-        protected Barnacle $barnacle,
+        protected BarnacleInjectController $barnacle,
     ) {}
 
     public function handle($request, Closure $next)
