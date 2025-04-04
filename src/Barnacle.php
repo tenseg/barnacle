@@ -3,7 +3,6 @@
 namespace Tenseg\Barnacle;
 
 use Composer\InstalledVersions;
-use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Preference;
 use Statamic\Facades\Site;
@@ -13,28 +12,45 @@ class Barnacle
 {
     protected $extensions = [];
 
-    protected static $barnacle = [];
+    protected static $barnacleData = [];
 
     public function __construct()
     {
-        if (empty(self::$barnacle)) {
+        if (empty(self::$barnacleData)) {
             // doing this here once as static, since this class seems to be instantiated
             // more than once (even though it is instantiated only once, from injectBarnacle)
             $url = app('request')->url();
             $path = $this->ensureLeadingSlash(app('request')->uri()->path());
             $site = Site::findByUrl($url);
             $entry = Entry::findByUri($path, $site);
-            self::$barnacle = [
+            self::$barnacleData = [
                 'url' => $url,
                 'path' => $path,
                 'site' => $site,
                 'entry' => $entry,
-                'initial_path' => $entry->path(),
-                'collections' => $this->getCollections($site),
                 'options' => config('barnacle.options'),
                 'version' => $this->getVersion(),
             ];
         }
+    }
+
+    /**
+     * Ensures a leading slash is present on the given path.
+     *
+     * The app('request')->uri()->path() method returns the root
+     * path as '/' but returns every other path without the leading
+     * slash. This method remedies that inconsistency.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    protected function ensureLeadingSlash($path)
+    {
+        if (substr($path, 0, 1) !== '/') {
+            $path = '/'.$path;
+        }
+
+        return $path;
     }
 
     public function isEnabled(): bool
@@ -49,6 +65,11 @@ class Barnacle
         return config('barnacle.enabled') ?? $cookie ?? config('app.debug', false);
     }
 
+    /**
+     * Injects the barnacle content into the given response.
+     *
+     * It is called by the InjectBarnacle middleware.
+     */
     public function inject(Response $response): void
     {
         if ($barnacle = $this->content()) {
@@ -61,6 +82,13 @@ class Barnacle
         }
     }
 
+    /**
+     * Retrieves the pretty version of the 'tenseg/barnacle' package
+     * as found in the composer.json file.
+     *
+     * @return string The version string if the package is installed,
+     *                otherwise an empty string.
+     */
     protected function getVersion(): string
     {
         if (! InstalledVersions::isInstalled('tenseg/barnacle')) {
@@ -68,48 +96,6 @@ class Barnacle
         }
 
         return InstalledVersions::getPrettyVersion('tenseg/barnacle');
-    }
-
-    protected function getCollections($site): array
-    {
-        if (! $user = auth()->user()) {
-            return [];
-        }
-        $collections = Collection::all()
-            ->filter(fn ($collection) => $user->can('view '.$collection->handle().' entries'))
-            ->reduce(function ($carry, $collection) use ($site, $user) {
-                $handle = $collection->handle();
-
-                if ($carry === null) {
-                    $carry = [];
-                }
-
-                $blueprints = $user->can("create $handle entries")
-                    ? $collection->entryBlueprints()
-                        ->select('title', 'handle')
-                        ->map(fn ($blueprint) => [
-                            'name' => $blueprint['title'].' to '.$collection->title,
-                            'url' => cp_route('collections.entries.create', [$collection, $site, 'blueprint' => $blueprint['handle']]),
-                        ])
-                    : collect([]);
-
-                foreach ($blueprints as $item) {
-                    $carry[] = $item;
-                }
-
-                return $carry;
-            });
-
-        return $collections;
-    }
-
-    protected function ensureLeadingSlash($path)
-    {
-        if (substr($path, 0, 1) !== '/') {
-            $path = '/'.$path;
-        }
-
-        return $path;
     }
 
     public function content(): string
@@ -121,8 +107,8 @@ class Barnacle
             if (view()->exists($view)) {
                 $components .= (new \Statamic\View\View)
                     ->template($view)
-                    ->with(['barnacle' => self::$barnacle])
-                    ->cascadeContent(self::$barnacle['entry'])
+                    ->with(['barnacle' => self::$barnacleData])
+                    ->cascadeContent(self::$barnacleData['entry'])
                     ->render();
             }
         }

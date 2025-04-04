@@ -1,8 +1,38 @@
+{{ if logged_in }}
 <?php
+    use Statamic\Facades\Collection;
+    
+    $user = auth()->user();
+
+    $collections = Collection::all()
+        ->filter(fn ($collection) => $user->can('view '.$collection->handle().' entries'))
+        ->reduce(function ($carry, $collection) use ($site, $user) {
+            $handle = $collection->handle();
+
+            if ($carry === null) {
+                $carry = [];
+            }
+
+            $blueprints = $user->can("create $handle entries")
+                ? $collection->entryBlueprints()
+                    ->select('title', 'handle')
+                    ->map(fn ($blueprint) => [
+                        'name' => $blueprint['title'],
+                        'url' => cp_route('collections.entries.create', [$collection, $site, 'blueprint' => $blueprint['handle']]),
+                    ])
+                : collect([]);
+
+            foreach ($blueprints as $item) {
+                $carry[] = $item;
+            }
+
+            return $carry;
+        });
+
     $choices = '';
     $maxLength = 0;
-    foreach($barnacle['collections'] as $collection) {
-        $label = "add a {$collection['name']}";
+    foreach($collections as $collection) {
+        $label = $collection['name'];
         $maxLength = max(strlen($label), $maxLength);
         $choices .= "<a class='barnacle-component' href='{$collection['url']}'>$label</a>";
     }
@@ -27,8 +57,9 @@
     </svg>
     <span class="barnacle-label">new</span>
   </summary>
-  <div class="barnacle-popup" style="width: <?php echo floor($maxLength * 0.6) ?>em; padding: 0;"><?php echo $choices ?></div>
+  <div class="barnacle-popup" style="width: <?php echo floor($maxLength * 0.8) ?>em; padding: 0;"><?php echo $choices ?></div>
 </details>
 <?php
     }
 ?>
+{{ /if }}

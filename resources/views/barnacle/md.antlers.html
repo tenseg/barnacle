@@ -1,6 +1,7 @@
-{{ if barnacle.options.file_scheme && barnacle.initial_path }}
+{{? $initial_path = $barnacle['entry']->path() ?}} {{ if
+barnacle.options.file_scheme && initial_path }}
 <a
-  href="{{ barnacle.options.file_scheme }}{{ barnacle.initial_path }}"
+  href="{{ barnacle.options.file_scheme }}{{ initial_path }}"
   class="barnacle-component"
   title="Edit source file"
 >
