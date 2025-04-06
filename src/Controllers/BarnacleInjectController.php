@@ -7,6 +7,7 @@ use Illuminate\Routing\Controller;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Preference;
 use Statamic\Facades\Site;
+use Statamic\Facades\User;
 use Symfony\Component\HttpFoundation\Response;
 
 class BarnacleInjectController extends Controller
@@ -93,7 +94,7 @@ class BarnacleInjectController extends Controller
         // prepare a list of the components this user is allowed to see
         $hidden = Preference::get('barnacle_hidden_components', []);
         $components = [];
-        if ($user = auth()->user()) {
+        if ($user = User::current()) {
             foreach (config('barnacle.components') as $key => $value) {
                 if ($user->can('use barnacle component '.$key) && ! in_array($key, $hidden)) {
                     $components[] = $key;

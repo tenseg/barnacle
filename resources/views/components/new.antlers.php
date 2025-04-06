@@ -1,8 +1,9 @@
 {{ if logged_in }}
 <?php
     use Statamic\Facades\Collection;
+    use Statamic\Facades\User;
     
-    $user = auth()->user();
+    $user = User::current();
 
     $collections = Collection::all()
         ->filter(fn ($collection) => $user->can('view '.$collection->handle().' entries'))

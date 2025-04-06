@@ -5,6 +5,7 @@ namespace Tenseg\Barnacle\Middleware;
 use Closure;
 use Statamic\Facades\Permission;
 use Statamic\Facades\Preference;
+use Statamic\Facades\User;
 
 class BarnaclePermissions
 {
@@ -22,7 +23,7 @@ class BarnaclePermissions
         });
 
         $fields = [];
-        $user = auth()->user();
+        $user = User::current();
 
         if ($user) {
 

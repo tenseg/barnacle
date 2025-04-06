@@ -4,6 +4,7 @@ namespace Tenseg\Barnacle\Controllers;
 
 use Illuminate\Routing\Controller;
 use Statamic\Facades\Preference;
+use Statamic\Facades\User;
 
 class BarnacleLoginController extends Controller
 {
@@ -13,11 +14,11 @@ class BarnacleLoginController extends Controller
             return false;
         }
 
-        if (! auth()->check()) {
+        if (! $user = User::current()) {
             return false;
         }
 
-        if (! auth()->user()->can('access cp') || ! auth()->user()->can('use barncale cookie')) {
+        if (! $user->can('access cp') || ! $user->can('use barncale cookie')) {
             return false;
         }
 
