@@ -2,10 +2,10 @@
 
 namespace Tenseg\Barnacle\Tags;
 
+use Statamic\Auth\User;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Preference;
 use Statamic\Facades\Site;
-use Statamic\Facades\User;
 use Statamic\Tags\Tags;
 
 class Barnacle extends Tags

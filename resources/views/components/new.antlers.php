@@ -1,7 +1,7 @@
 {{ if logged_in }}
 <?php
     use Statamic\Facades\Collection;
-    use Statamic\Facades\User;
+    use Statamic\Auth\User;
     
     $user = User::current();
 

@@ -4,10 +4,10 @@ namespace Tenseg\Barnacle\Controllers;
 
 use Composer\InstalledVersions;
 use Illuminate\Routing\Controller;
+use Statamic\Auth\User;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Preference;
 use Statamic\Facades\Site;
-use Statamic\Facades\User;
 use Symfony\Component\HttpFoundation\Response;
 
 class BarnacleInjectController extends Controller

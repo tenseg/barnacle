@@ -8,7 +8,7 @@ Barnacle is a Statamic addon that creates and extensible toolbar on the front en
 [X] Permissions and Preferences
 [X] Move main Barnacle to a template
     [X] Perhaps move components into partials?
-[ ] Make configuration and view publishable for customization
+[X] Make configuration and templates publishable for customization
 [ ] Harden components against missing variables
 [ ] Add the MIT License
 [ ] Instructions for installing from Git
@@ -25,6 +25,18 @@ You can install this addon via Composer:
 
 ``` bash
 composer require tenseg/barnacle
+```
+
+Publish Barnacle's configuration if you want to make changes:
+
+``` bash
+php artisan vendor:publish --tag=barnacle-config
+```
+
+Publish Barnacle's templates if you want to customize the components:
+
+``` bash
+php artisan vendor:publish --tag=barnacle-templates
 ```
 
 ## How to Use

@@ -13,5 +13,19 @@ class ServiceProvider extends AddonServiceProvider
         'statamic.cp' => [BarnaclePermissions::class],
     ];
 
-    public function bootAddon() {}
+    public function bootAddon()
+    {
+        $this->mergeConfigFrom(__DIR__.'/../config/barnacle.php', 'barnacle');
+
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../config/barnacle.php' => config_path('barnacle.php'),
+            ], 'barnacle-config');
+
+            $this->publishes([
+                __DIR__.'/../resources/views/barnacle' => resource_path('views/vendor/barnacle'),
+            ], 'barnacle-templates');
+
+        }
+    }
 }

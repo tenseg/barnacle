@@ -3,9 +3,9 @@
 namespace Tenseg\Barnacle\Middleware;
 
 use Closure;
+use Statamic\Auth\User;
 use Statamic\Facades\Permission;
 use Statamic\Facades\Preference;
-use Statamic\Facades\User;
 
 class BarnaclePermissions
 {

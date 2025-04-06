@@ -3,8 +3,8 @@
 namespace Tenseg\Barnacle\Controllers;
 
 use Illuminate\Routing\Controller;
+use Statamic\Auth\User;
 use Statamic\Facades\Preference;
-use Statamic\Facades\User;
 
 class BarnacleLoginController extends Controller
 {
