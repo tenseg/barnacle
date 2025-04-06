@@ -38,14 +38,14 @@ return [
     */
 
     'components' => [
-        'page' => 'Link to page in control panel',
-        'md' => 'Link to page source',
-        'blueprint' => 'Link to blueprint',
-        'template' => 'Link to template source',
-        'collection' => 'Link to collection',
-        'new' => 'Create new entries',
+        'edit' => 'Edit entry in control panel',
+        'md' => 'Open entry source',
+        'blueprint' => 'Edit blueprint',
+        'template' => 'Open template source',
+        'collection' => 'Go to collection',
+        'new' => 'Create new entry',
         'git' => 'Git information',
-        'prefs' => 'Link to your preferences',
+        'prefs' => 'Edit user preferences',
     ],
 
     /*

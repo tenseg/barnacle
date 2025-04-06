@@ -2,7 +2,7 @@
 <a
   href="{{ $link | replace( 'edit/x', 'preferences/edit') }}"
   class="barnacle-component"
-  title="Edit preferences"
+  title="Edit preferences!"
 >
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -24,4 +24,9 @@
     </g>
   </svg>
 </a>
-{{ /if }}
+{{ /if }} {{#
+<div style="position: fixed; top: 0; left: 0">
+  <p>Trying</p>
+  {{ partial:if_exists src="barnacle::barnacle/git" }}
+</div>
+#}}

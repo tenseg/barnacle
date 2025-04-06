@@ -20,18 +20,6 @@ class BarnacleInjectController extends Controller
         if (empty(self::$barnacleData)) {
             // doing this here once as static, since this class seems to be instantiated
             // more than once (even though it is instantiated only once, from injectBarnacle)
-            $url = app('request')->url();
-            $path = $this->ensureLeadingSlash(app('request')->uri()->path());
-            $site = Site::findByUrl($url);
-            $entry = Entry::findByUri($path, $site);
-            self::$barnacleData = [
-                'url' => $url,
-                'path' => $path,
-                'site' => $site,
-                'entry' => $entry,
-                'options' => config('barnacle.options'),
-                'version' => $this->getVersion(),
-            ];
         }
     }
 
@@ -101,19 +89,18 @@ class BarnacleInjectController extends Controller
 
     public function content(): string
     {
-        $user = auth()->user();
+
+        // prepare a list of the components this user is allowed to see
         $hidden = Preference::get('barnacle_hidden_components', []);
-        ds(['hidden' => $hidden]);
-        $components = '';
-        foreach (config('barnacle.components') as $component => $name) {
-            $view = 'barnacle::barnacle.'.$component;
-            if (view()->exists($view) && $user->can('use barnacle component '.$component) && ! in_array($component, $hidden)) {
-                $components .= (new \Statamic\View\View)
-                    ->template($view)
-                    ->with(['barnacle' => self::$barnacleData])
-                    ->cascadeContent(self::$barnacleData['entry'])
-                    ->render();
+        $components = [];
+        if ($user = auth()->user()) {
+            foreach (config('barnacle.components') as $key => $value) {
+                if ($user->can('use barnacle component '.$key) && ! in_array($key, $hidden)) {
+                    $components[] = $key;
+                }
             }
+        } else {
+            $components[] = 'login'; // show the login component to unauthenticated users
         }
 
         $open = 'open';
@@ -123,111 +110,31 @@ class BarnacleInjectController extends Controller
             }
         }
 
-        $html = <<<HTML
-            <style>
-                #barnacle {
-                    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-                    font-size: 12px;
-                    position: fixed;
-                    top: 0;
-                    right: 0;
-                    z-index: 999999;
-                    display: flex;
-                    gap: 1px;
-                    flex-wrap: wrap;
-                    justify-content: flex-end;
-                }
+        // these are some variables we want to make available to our components in Antlers
+        $url = app('request')->url();
+        $path = $this->ensureLeadingSlash(app('request')->uri()->path());
+        $site = Site::findByUrl($url);
+        $entry = Entry::findByUri($path, $site);
+        self::$barnacleData = [
+            'url' => $url,
+            'path' => $path,
+            'site' => $site,
+            'entry' => $entry,
+            'components' => $components,
+            'open' => $open,
+            'options' => config('barnacle.options'),
+            'version' => $this->getVersion(),
+        ];
 
-                #barnacle .barnacle-component {
-                    display: block;
-                    padding: 5px 10px;
-                    background-color: #000;
-                    color: #fff;
-                    cursor: default;
-                }
-                
-                #barnacle .toggle,
-                #barnacle a[href].barnacle-component {
-                    cursor: pointer;
-                }
-                
-                #barnacle .toggle:hover,
-                #barnacle a[href].barnacle-component:hover {
-                    background-color: #888;
-                }
-                
-                #barnacle .barnacle-component svg {
-                    display: inline-block;
-                }
-                
-                #barnacle .hider.open svg.closed {
-                    display: none;
-                }
-                #barnacle .hider:not(.open) svg.open {
-                    display: none;
-                }
-                
-                #barnacle:has(> .hider:not(.open)) {
-                    opacity: 0;
-                    transition: opacity 300ms 700ms;
-                }
-                
-                #barnacle:hover:has(> .hider:not(.open)) {
-                    opacity: 1;
-                    transition: opacity 50ms 0ms;
-                }
-                
-                #barnacle details.barnacle-component {
-                    position: relative;
-                }
-                #barnacle details.barnacle-component .barnacle-popup {
-                    position: absolute;
-                    top: calc(100% + 1px);
-                    right: 0;
-                    background-color: #000;
-                    padding: 5px 10px;
-                }
-                
-                #barnacle details.barnacle-component > summary {
-                    list-style: none;
-                }
-                
-                #barnacle details.barnacle-component > summary::-webkit-details-marker {
-                    display: none;
-                }
-                
-                @media (max-width: 500px) {
-                    #barnacle .barnacle-label {
-                        display: none;
-                    }
-                }
-            </style>
-            <div id="barnacle" data-version="{$this->getVersion()}">
-                $components
-                <a class="barnacle-component hider toggle $open" title="Toggle visibility">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="open"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M9.5 14.5L3 21M5 9.485l9.193 9.193l1.697-1.697l-.393-3.787l5.51-4.673l-5.85-5.85l-4.674 5.51l-3.786-.393z"/></svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="closed"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M9.5 14.5L3 21M7.676 7.89l-.979-.102L5 9.485l9.193 9.193l1.697-1.697l-.102-.981m-4.303-9l3.672-4.329l5.85 5.85l-4.308 3.654M3 3l18 18"/></svg>
-                </a>
-            </div>
-            <script>
-                const toggles = document.querySelectorAll('#barnacle .barnacle-component.toggle');
-                toggles.forEach(toggle => {
-                    toggle.addEventListener('click', () => {
-                        const result = toggle.classList.toggle('open');
-                        if (toggle.classList.contains('hider')) {
-                            console.log('hider hit');
-                            if (result) {
-                                document.cookie = 'barnacle-hider=open';
-                                console.log('open');
-                            } else {
-                                document.cookie = 'barnacle-hider=closed';
-                                console.log('closed');
-                            }
-                        }
-                    })
-                })
-            </script>
-        HTML;
+        $html = '';
+        $view = 'barnacle::index';
+        if (view()->exists($view)) {
+            $html .= (new \Statamic\View\View)
+                ->template($view)
+                ->with(['barnacle' => self::$barnacleData])
+                ->cascadeContent(self::$barnacleData['entry'])
+                ->render();
+        }
 
         return $html;
     }
