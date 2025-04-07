@@ -23,7 +23,7 @@ class ServiceProvider extends AddonServiceProvider
             ], 'barnacle-config');
 
             $this->publishes([
-                __DIR__.'/../resources/views/barnacle' => resource_path('views/vendor/barnacle'),
+                __DIR__.'/../resources/views' => resource_path('views/vendor/barnacle'),
             ], 'barnacle-templates');
 
         }

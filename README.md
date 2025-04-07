@@ -23,33 +23,30 @@ Barnacle is a Statamic addon that creates and extensible toolbar on the front en
 For now, Barnacle is hosted in a private Github repository without a listing in [packagist.org](packagist.org). Please contact us at [dev@tenseg.net](mailto:dev@tenseg.net?subject=Barnacle%20repo%20request) for access. Once you have access to the repository, you can add the following to your `composer.json` file to let composer know about it.
 
 ```json
-    "require": {
-        "tenseg/barnacle": "dev-main"
-    },
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:tenseg/barnacle.git"
+            "url": "https://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@github.com/tenseg/barnacle.git"
         }
     ]
 ```
-Note that you will probably have to weave these entries into `composer.json` around other existing entries, so modify as required.
+Note that you will probably have to weave these entries into `composer.json` around other existing entries, so modify as required. Also, this URL uses a read-only token that will expire in April 2026.
 
 After that is in place, you can install Barnacle via Composer as usual:
 
-``` bash
+```sh
 composer require tenseg/barnacle
 ```
 
 Publish Barnacle's configuration if you want to make changes:
 
-``` bash
+```sh
 php artisan vendor:publish --tag=barnacle-config
 ```
 
 Publish Barnacle's templates if you want to customize the components:
 
-``` bash
+```sh
 php artisan vendor:publish --tag=barnacle-templates
 ```
 
