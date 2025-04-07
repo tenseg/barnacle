@@ -4,20 +4,19 @@
 	$git_file = base_path() . "/.git/HEAD";
 	if (file_exists($git_file)) {
 		if ($gitinfo = file($git_file)) {
-			$style = "background-color: #FF88FF; color: #000000; font-weight: 900;";
+			$style = 'style="background-color: #FF88FF; color: #000000; font-weight: 900;"';
 			$exp = explode("/", $gitinfo[0], 3);
 			$branch = trim( $exp[2] );
 			if ($branch == "main") {
-				$style = "background-color: #44CC66; color: #000000; font-weight: 900;";
+				$style = 'style="background-color: #44CC66; color: #000000; font-weight: 900;"';
 			}
 		}
 	}
 ?>
-<a
-  class="barnacle-component"
-  style="<?php echo $style ?>"
-  title="Git <?php echo $branch ?> branch"
->
+<a class="barnacle-component" <?php echo $style ?>
+  title="Git
+  <?php echo $branch ?>
+  branch" >
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="18"

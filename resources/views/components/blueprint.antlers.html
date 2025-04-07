@@ -1,8 +1,6 @@
-{{? $link = cp_route('', ['id' => 'x']) ?}}
+{{ if logged_in }}
 <a
-    {{ if logged_in}}
-        href="{{ $link | replace( 'edit/x', 'collections/{{collection}}/blueprints/{{blueprint}}/edit') }}"
-    {{ /if }}
+    href="{{ route:statamic.cp.collections.blueprints.edit collection="{{ collection }}" blueprint="{{ blueprint }}" }}"
     class="barnacle-component"
     title="Edit {{blueprint}} blueprint"
 >
@@ -21,3 +19,4 @@
     </svg>
     <span class="barnacle-label">{{blueprint}}</span>
 </a>
+{{ /if }}

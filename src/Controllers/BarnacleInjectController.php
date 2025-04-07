@@ -5,7 +5,7 @@ namespace Tenseg\Barnacle\Controllers;
 use Composer\InstalledVersions;
 use Illuminate\Routing\Controller;
 use Statamic\Auth\User;
-use Statamic\Facades\Entry;
+use Statamic\Entries\Entry;
 use Statamic\Facades\Preference;
 use Statamic\Facades\Site;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,16 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 class BarnacleInjectController extends Controller
 {
     protected $extensions = [];
-
-    protected static $barnacleData = [];
-
-    public function __construct()
-    {
-        if (empty(self::$barnacleData)) {
-            // doing this here once as static, since this class seems to be instantiated
-            // more than once (even though it is instantiated only once, from injectBarnacle)
-        }
-    }
 
     /**
      * Ensures a leading slash is present on the given path.
@@ -116,14 +106,11 @@ class BarnacleInjectController extends Controller
         $path = $this->ensureLeadingSlash(app('request')->uri()->path());
         $site = Site::findByUrl($url);
         $entry = Entry::findByUri($path, $site);
-        self::$barnacleData = [
-            'url' => $url,
-            'path' => $path,
-            'site' => $site,
-            'entry' => $entry,
+        $barnacleData = [
             'components' => $components,
-            'open' => $open,
             'options' => config('barnacle.options'),
+            'source_path' => $entry->path(),
+            'open' => $open,
             'version' => $this->getVersion(),
         ];
 
@@ -132,8 +119,8 @@ class BarnacleInjectController extends Controller
         if (view()->exists($view)) {
             $html .= (new \Statamic\View\View)
                 ->template($view)
-                ->with(['barnacle' => self::$barnacleData])
-                ->cascadeContent(self::$barnacleData['entry'])
+                ->with(['barnacle' => $barnacleData])
+                ->cascadeContent($entry)
                 ->render();
         }
 

@@ -1,6 +1,6 @@
-{{ if logged_in}} {{? $link = cp_route('', ['id' => 'x']) ?}}
+{{ if logged_in}}
 <a
-  href="{{ $link | replace( 'edit/x', 'preferences/edit') }}"
+  href="{{ route:statamic.cp.preferences.user.edit }}"
   class="barnacle-component"
   title="Edit preferences!"
 >

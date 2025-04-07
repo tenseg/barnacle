@@ -1,5 +1,9 @@
 {{ if not logged_in}}
-<a class="barnacle-component" href="{{edit_url}}" title="Login to edit">
+<a
+  class="barnacle-component"
+  href="{{? echo cp_route('login') ?}}"
+  title="Login to edit"
+>
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="18"

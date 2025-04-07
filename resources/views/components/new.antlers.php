@@ -38,6 +38,7 @@
         $choices .= "<a class='barnacle-component' href='{$collection['url']}'>$label</a>";
     }
     if ($choices) {
+      $style = 'style="width:' . floor($maxLength * 0.8) . 'em; padding:0;"';
 ?>
 <details class="barnacle-component toggle" title="Create new entry">
   <summary>
@@ -58,7 +59,7 @@
     </svg>
     <span class="barnacle-label">new</span>
   </summary>
-  <div class="barnacle-popup" style="width: <?php echo floor($maxLength * 0.8) ?>em; padding: 0;"><?php echo $choices ?></div>
+  <div class="barnacle-popup" <?php echo $style ?> ><?php echo $choices ?></div>
 </details>
 <?php
     }

@@ -2,20 +2,10 @@
 
 Barnacle is a Statamic addon that creates and extensible toolbar on the front end of your site.
 
-## TO DO
-
-- [X] Move collection generation into the 'new' component
-- [X] Permissions and Preferences
-- [X] Move main Barnacle to a template and components to partials
-- [X] Make configuration and templates publishable for customization
-- [ ] Harden components against missing variables
-- [X] Add the MIT License
-- [X] Instructions for installing from Git
-
 ## Features
 
 - Create new components with regular templates
-- Customize which components are exposed to user roles
+- Customize which components are exposed to users by role
 - Allow users to customize which components they see
 
 ## How to Install
