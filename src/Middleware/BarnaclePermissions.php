@@ -30,7 +30,8 @@ class BarnaclePermissions
             if ($user->can('use barnacle cookie')) {
                 $fields['barnacle_disabled'] = [
                     'type' => 'toggle',
-                    'display' => __('Save a Cookie to enable Barnacle'),
+                    'display' => __('Allow Barnacle to show a login link'),
+                    'instructions' => __('This will allow Barnacle save a cookie in your browser so that on future visits it will show a login link when you are not already logged in. You will still need to know your email adress and password to login.'),
                     'width' => '50',
                     'default' => true,
                 ];
