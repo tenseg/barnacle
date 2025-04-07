@@ -4,11 +4,11 @@ $branch = "—";
     $git_file = base_path() . "/.git/HEAD";
     if (file_exists($git_file)) {
         if ($gitinfo = file($git_file)) {
-            $style = 'style="background-color: #FF88FF; color: #000000; font-weight: 900;"';
+            $style = 'style="--color-background: #FF88FF; --color-text: #000000;; font-weight: 900;"';
             $exp = explode("/", $gitinfo[0], 3);
             $branch = trim( $exp[2] );
             if ($branch == "main") {
-                $style = 'style="background-color: #44CC66; color: #000000; font-weight: 900;"';
+                $style = 'style="--color-background: #44CC66; --color-text: #000000; font-weight: 900;"';
             }
         }
     }
