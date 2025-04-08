@@ -67,9 +67,15 @@ return [
         | This file sheme will be used to build a links to source files.
         | Note, omit the final slash since the path will start with a slash.
         |
+        | Leaving this blank will tell Barnacle to not display source links.
+        |
+        | For example, put this in your .env file:
+        |
+        | BARNACLE_FILE_SCHEME=vscode://file
+        |
         */
 
-        'file_scheme' => 'vscode://file',
+        'file_scheme' => env('BARNACLE_FILE_SCHEME', ''),
     ],
 
 ];
