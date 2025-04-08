@@ -1,20 +1,33 @@
-<?php
-$style = "";
-$branch = "—";
+{{?
+	// this PHP finds out the name of the current git branch
+	// and chooses a color based on whether it is the main branch
+    $style = "";
+    $branch = "—";
+	$color = "";
     $git_file = base_path() . "/.git/HEAD";
     if (file_exists($git_file)) {
+        $color = "#FF88FF";
         if ($gitinfo = file($git_file)) {
-            $style = 'style="--color-background: #FF88FF; --color-text: #000000;; font-weight: 900;"';
             $exp = explode("/", $gitinfo[0], 3);
             $branch = trim( $exp[2] );
             if ($branch == "main") {
-                $style = 'style="--color-background: #44CC66; --color-text: #000000; font-weight: 900;"';
+                $color = "#44CC66";
             }
+            $style = "style=\"--color-background: $color; --color-text: #000000;; font-weight: 900;\"";
         }
     }
-?>
-<a class="barnacle-component" <?php echo $style ?>
-    title="Git <?php echo $branch ?> branch" >
+?}}
+{{ if color }}
+	{{ push:barnacle }}
+		<style>
+			#barnacle {
+				--color-bottom: {{ $color }};
+			}
+		</style>
+	{{ /push:barnacle }}
+{{ /if}}
+<a class="barnacle-component" {{ $style }}
+    title="Git {{ $branch }} branch" >
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
         <path
             fill="none"
@@ -25,5 +38,5 @@ $branch = "—";
             d="M17 7a2 2 0 1 0 0-4a2 2 0 0 0 0 4M7 7a2 2 0 1 0 0-4a2 2 0 0 0 0 4m0 14a2 2 0 1 0 0-4a2 2 0 0 0 0 4M7 7v10M17 7v1c0 2.5-2 3-2 3l-6 2s-2 .5-2 3v1"
         />
     </svg>
-    <span class="barnacle-label"><?php echo $branch ?></span>
+    <span class="barnacle-label">{{ $branch }}</span>
 </a>

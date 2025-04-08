@@ -7,7 +7,6 @@ use Illuminate\Routing\Controller;
 use Statamic\Auth\User;
 use Statamic\Entries\Entry;
 use Statamic\Facades\Preference;
-use Statamic\Facades\Site;
 use Symfony\Component\HttpFoundation\Response;
 
 class BarnacleInjectController extends Controller
@@ -102,10 +101,7 @@ class BarnacleInjectController extends Controller
         }
 
         // these are some variables we want to make available to our components in Antlers
-        $url = app('request')->url();
-        $path = $this->ensureLeadingSlash(app('request')->uri()->path());
-        $site = Site::findByUrl($url);
-        $entry = Entry::findByUri($path, $site);
+        $entry = Entry::query()->where('url', app('request')->uri()->path())->first();
         $barnacleData = [
             'components' => $components,
             'options' => config('barnacle.options'),

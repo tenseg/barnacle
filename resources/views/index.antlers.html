@@ -7,26 +7,40 @@
         right: 0;
         z-index: 999999;
         display: flex;
-        gap: 1px;
         flex-wrap: wrap;
         justify-content: flex-end;
-		--color-background: #000;
-		--color-background-active: #888;
-		--color-text: #fff;
+        --color-background: #fff;
+        --color-background-active: #ebebeb;
+        --color-text: #555;
+        --color-left: #ddd;
+        --color-bottom: #b92547;
     }
-	
+    
+    @media (prefers-color-scheme: dark) {
+        #barnacle {
+            --color-background: #252a37;
+            --color-background-active: #4A5568;
+            --color-text: #EDF2F7;
+            --color-left: #2D3748;
+            --color-bottom: #7b1e34;
+        }
+    }
+    
     #barnacle .barnacle-component {
         display: block;
-        padding: 5px 10px;
+        padding: 5px 10px 5px 11px;
         background-color: var(--color-background);
         color: var(--color-text);
         cursor: default;
+        background-image:
+        linear-gradient(to left, var(--color-left) 1px, transparent 1px);
+        border-bottom: 3px solid var(--color-bottom);
     }
-	
-	#barnacle > .barnacle-component:first-child {
-		border-radius: 0 0 0 5px;
-	}
-	
+    
+    #barnacle > .barnacle-component:first-child {
+        border-radius: 0 0 0 5px;
+    }
+    
     #barnacle .toggle,
     #barnacle a[href].barnacle-component {
         cursor: pointer;
@@ -63,15 +77,27 @@
     }
     #barnacle details.barnacle-component .barnacle-popup {
         position: absolute;
-        top: calc(100% + 1px);
+        top: calc(100% + 3px);
         right: 0;
         padding: 5px 10px;
     }
+    
+    #barnacle details.barnacle-component.open {
+        border-bottom: 3px solid transparent;
+    }
 
-	#barnacle details.barnacle-component .barnacle-popup > .barnacle-component:last-child {
-		border-radius: 0 0 5px 5px;
-	}
+    #barnacle details.barnacle-component .barnacle-popup > .barnacle-component {
+        background-image:
+        linear-gradient(to right, var(--color-left) 1px, transparent 1px),
+        linear-gradient(to left, var(--color-left) 1px, transparent 1px);
+        border-width: 0;
+    }
 
+    #barnacle details.barnacle-component .barnacle-popup > .barnacle-component:last-child {
+        border-radius: 0 0 5px 5px;
+        border-bottom: 3px solid var(--color-bottom);
+    }
+    
     #barnacle details.barnacle-component > summary {
         list-style: none;
     }
@@ -86,6 +112,7 @@
         }
     }
 </style>
+{{ stack:barnacle }}
 <div id="barnacle" data-version="{$this->getVersion()}">
     {{ foreach:barnacle.components }}
         {{ partial:if_exists src="barnacle::components/{{ value }}" }}
