@@ -101,7 +101,7 @@ class BarnacleInjectController extends Controller
         }
 
         // these are some variables we want to make available to our components in Antlers
-        $entry = Entry::query()->where('url', app('request')->uri()->path())->first();
+        $entry = Entry::query()->where('url', $this->ensureLeadingSlash(app('request')->uri()->path()))->first();
         $barnacleData = [
             'components' => $components,
             'options' => config('barnacle.options'),
