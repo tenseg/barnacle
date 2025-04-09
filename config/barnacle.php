@@ -7,25 +7,29 @@ return [
     | Barnacle Enabled
     |--------------------------------------------------------------------------
     |
-    | Barnacle is enabled by default, when app.debug is set to true.
-    | You can override this by setting true or false instead of null.
+    | Barnacle is enabled by default when app.debug is set to true or users
+    | are logged in. You can force Barnacle to always appear by setting
+    | this option to true.
     |
     */
 
-    'enabled' => env('BARNACLE_ENABLED', null),
+    'always' => env('BARNACLE_ALWAYS', null),
 
     /*
     |--------------------------------------------------------------------------
     | Barnacle Cookie
     |--------------------------------------------------------------------------
     |
-    | If you provide a cookie name like "barnacle_cookie", then each time
-    | a user logs in, Barnacle will leave a cookie, making it possilbe
-    | to see Barnacle even when it is disabled and app.debug is set to false.
+    | Provide an alternate cookie name.
+    |
+    | By default, a cookie will be created each time
+    | a user logs in, Barnacle will leave a cookie in
+    | the browser, making it possilbe to see Barnacle
+    | even when nobody is logged in on that browser.
     |
     */
 
-    'cookie' => env('BARNACLE_COOKIE', null),
+    'cookie' => env('BARNACLE_COOKIE', 'barnacle_cookie'),
 
     /*
     |--------------------------------------------------------------------------

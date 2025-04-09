@@ -41,7 +41,7 @@ class BarnacleInjectController extends Controller
             }
         }
 
-        return config('barnacle.enabled') ?? $cookie ?? config('app.debug', false);
+        return config('barnacle.always') ?? $cookie ?? config('app.debug', false);
     }
 
     /**

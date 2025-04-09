@@ -28,21 +28,33 @@ After that is in place, you can install Barnacle via Composer as usual:
 composer require tenseg/barnacle
 ```
 
-Publish Barnacle's configuration if you want to make changes:
+## How to Use
+
+Barnacle attaches a toolbar menu to the upper right corner of your website. You will only see this menu if:
+
+1. Your site is in debug mode (you have set `APP_DEBUG=true` in your `.env` file, for example);
+2. You are logged in to your site;
+3. You have logged in to your site in the past week on the same browser.
+
+That third option is facilitated by a cookie Barnacle leaves in your browser when you log in. This option can be disabled in role permissions or by setting the `BARNACLE_COOKIE=` to nothing in your `.env` file. You can also choose to have Barnacle always appear by setting `BARNACLE_ALWAYS=true` in your `.env` file.
+
+Each user can set their own preferences to hide Barnacle components they don't wish to see. Users can also click on the "pin" icon to hide Barnacle when it is distracting. Hovering over the space where Barnacle usually appears will make it visible even when hidden.
+
+## Customizing Barnacle
+
+You can publish Barnacle's configuration if you want to make changes to the components that are available to Barnacle:
 
 ```sh
 php artisan vendor:publish --tag=barnacle-config
 ```
 
-Publish Barnacle's templates if you want to customize the components:
+If you wish to create your own custom components, then publish Barnacle's templates:
 
 ```sh
 php artisan vendor:publish --tag=barnacle-templates
 ```
 
-## How to Use
-
-Publish the configuration and templates. Play on!
+Custom components are simply template files, like other Statamic views. Given the power of Antlers, which can even include PHP code, the potential for custom components is really endless. See the [example.antlers.html](resources/views/components/example.antlers.html) component for an extremly minimal example, and the [new.antlers.html](resources/views/components/new.antlers.html) component for a much more involved example.
 
 ## Credits
 

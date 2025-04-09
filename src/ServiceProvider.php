@@ -15,6 +15,7 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon()
     {
+        ds('cookie name: "'.config('barnacle.cookie').'"');
         $this->mergeConfigFrom(__DIR__.'/../config/barnacle.php', 'barnacle');
 
         if ($this->app->runningInConsole()) {
