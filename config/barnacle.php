@@ -36,21 +36,33 @@ return [
     | Barnacle Components
     |--------------------------------------------------------------------------
     |
-    | You can add your own components here, or remove the ones you don't want.
+    | Note that by default, components you define in the .env file using JSON
+    | encoding will be added before the final 'prefs' component. So you don't
+    | have to edit this configuration at all. For example:
+    |
+    | BARNACLE_COMPONENTS='{"example":"Example Component"}'
+    |
+    | However, you can also add or remove components here too.
+    |
     | Create a template with the same name as the key to display the component.
     |
     */
 
-    'components' => [
-        'edit' => 'Edit entry in control panel',
-        'md' => 'Open entry source',
-        'blueprint' => 'Edit blueprint',
-        'template' => 'Open template source',
-        'collection' => 'Go to collection',
-        'new' => 'Create new entry',
-        'git' => 'Git information',
-        'prefs' => 'Edit user preferences',
-    ],
+    'components' => array_merge(
+        [
+            'edit' => 'Edit entry in control panel',
+            'md' => 'Open entry source',
+            'blueprint' => 'Edit blueprint',
+            'template' => 'Open template source',
+            'collection' => 'Go to collection',
+            'new' => 'Create new entry',
+            'git' => 'Git information',
+        ],
+        json_decode(env('BARNACLE_COMPONENTS', null), true) ?: [],
+        [
+            'prefs' => 'Edit user preferences',
+        ]
+    ),
 
     /*
     |--------------------------------------------------------------------------

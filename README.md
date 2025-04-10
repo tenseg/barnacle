@@ -42,19 +42,29 @@ Each user can set their own preferences to hide Barnacle components they don't w
 
 ## Customizing Barnacle
 
-You can publish Barnacle's configuration if you want to make changes to the components that are available to Barnacle:
-
-```sh
-php artisan vendor:publish --tag=barnacle-config
-```
-
-If you wish to create your own custom components, then publish Barnacle's templates:
+If you wish to create your own custom components, then first publish Barnacle's templates:
 
 ```sh
 php artisan vendor:publish --tag=barnacle-templates
 ```
 
+This will put the default templates into the `resources/views/vendor/barnacle` directory of your Statamic project.
+
 Custom components are simply template files, like other Statamic views. Given the power of Antlers, which can even include PHP code, the potential for custom components is really endless. See the [example.antlers.html](resources/views/components/example.antlers.html) component for an extremly minimal example, and the [new.antlers.html](resources/views/components/new.antlers.html) component for a much more involved example.
+
+Once you have defined a new component, you can tell Barnacle to include it by adding a JSON array of custom components to your `.env` file. For example, you would include a component in the template `example.antlers.html` with the following in `.env`:
+
+```sh
+BARNACLE_COMPONENTS='{"example":"Example Component"}'
+```
+
+The key matches the template, and the value will be used to describe the component in Statamic permissions and preferences.
+
+You can also publish Barnacle's configuration if you wish, but this should probably not be necessary:
+
+```sh
+php artisan vendor:publish --tag=barnacle-config
+```
 
 ## Credits
 

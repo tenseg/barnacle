@@ -85,6 +85,7 @@ class BarnacleInjectController extends Controller
         $components = [];
         if ($user = User::current()) {
             foreach (config('barnacle.components') as $key => $value) {
+                ds($key);
                 if ($user->can('use barnacle component '.$key) && ! in_array($key, $hidden)) {
                     $components[] = $key;
                 }
