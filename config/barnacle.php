@@ -58,7 +58,7 @@ return [
             'new' => 'Create new entry',
             'git' => 'Git information',
         ],
-        json_decode(env('BARNACLE_COMPONENTS', null), true) ?: [],
+        json_decode(env('BARNACLE_COMPONENTS', '{}'), true) ?: [],
         [
             'prefs' => 'Edit user preferences',
         ]
