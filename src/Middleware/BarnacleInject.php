@@ -16,14 +16,16 @@ class BarnacleInject
     {
         $response = $next($request);
 
-        if (! $this->barnacle->isEnabled() || $response->status() !== 200 || $request->query->has('live-preview')) {
-            return $response;
-        }
-
-        try {
-            $this->barnacle->inject($response);
-        } catch (\Exception $e) {
-            Log::debug($e->getMessage());
+        if ($this->barnacle->isEnabled()
+            && $response->status() === 200
+            && ! $request->query->has('live-preview')
+            && ! app()->runningInConsole()
+        ) {
+            try {
+                $this->barnacle->inject($response);
+            } catch (\Exception $e) {
+                Log::debug($e->getMessage());
+            }
         }
 
         return $response;

@@ -1,6 +1,6 @@
 # Barnacle
 
-Barnacle is a Statamic addon that creates and extensible toolbar on the front end of your site.
+Barnacle is a Statamic addon that creates and extensible toolbar on the front end of your site. Barnacle builds a toolbar using regular Statamic templates/views, which is super flexible, but also means that Barnacle is only useful on sites that are not caching their pages. This is a pretty big limitation, keep it in mind and consider alternatives (see the "Credits" section for some ideas). Barnacle is primarily intended as a developer tool, though on un-cached sites it can be helpful for site editors and authors.
 
 ## Features
 
@@ -60,15 +60,16 @@ BARNACLE_COMPONENTS='{"example":"Example Component"}'
 
 The key matches the template, and the value will be used to describe the component in Statamic permissions and preferences.
 
-You can also publish Barnacle's configuration if you wish, but this should probably not be necessary:
+You can also publish Barnacle's configuration if you wish:
 
 ```sh
 php artisan vendor:publish --tag=barnacle-config
 ```
+Changes made to the `config/barnacle.php` file will be propagated by git to other instances of the site, while those in the `.env` file typically only apply to that single instance.
 
 ## Credits
 
-This addon was inspired by both the [Statamic Toolbar](https://statamic.com/addons/heidkaemper/toolbar) addon and the [Admin Bar](https://statamic.com/addons/el-schneider/admin-bar) addon. Both of those are wonderful and worthy of you consideration before you decide to adopt Barnacle.
+This addon was inspired by both the [Statamic Toolbar](https://statamic.com/addons/heidkaemper/toolbar) addon and the [Admin Bar](https://statamic.com/addons/el-schneider/admin-bar) addon. Both of those are wonderful and worthy of you consideration before you decide to adopt Barnacle. They each can do things that Barnacle does not do.
 
 The icons are from [Iconoir at Iconify](https://icon-sets.iconify.design/iconoir/) by Luca Burgio and made available with an MIT license.
 
