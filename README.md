@@ -1,6 +1,6 @@
 # Barnacle
 
-Barnacle is a Statamic addon that creates and extensible toolbar on the front end of your site. Barnacle builds a toolbar using regular Statamic templates/views, which is super flexible, but also means that Barnacle is only useful on sites that are not caching their pages. This is a pretty big limitation, keep it in mind and consider alternatives (see the "Credits" section for some ideas). Barnacle is primarily intended as a developer tool, though on un-cached sites it can be helpful for site editors and authors.
+Barnacle is a Statamic addon that creates and extensible toolbar on the front end of your site. Barnacle builds a toolbar using regular Statamic templates/views, which is super flexible, but also means that Barnacle is only useful on sites that are not caching their pages. This is a pretty big limitation, keep it in mind and consider alternatives (see the "Credits" section for some ideas). Barnacle is primarily intended as a developer tool, though on un-cached sites it can be helpful for site editors and authors as well.
 
 ## Features
 
@@ -30,7 +30,7 @@ composer require tenseg/barnacle
 
 ## How to Use
 
-Barnacle attaches a toolbar menu to the upper right corner of your website. You will only see this menu if:
+Barnacle attaches a toolbar menu to the upper right corner of your website. You will only see this menu if one of the following is true:
 
 1. Your site is in debug mode (you have set `APP_DEBUG=true` in your `.env` file, for example);
 2. You are logged in to your site;
@@ -41,6 +41,12 @@ That third option is facilitated by a cookie Barnacle leaves in your browser whe
 Each user can set their own preferences to hide Barnacle components they don't wish to see. Users can also click on the "pin" icon to hide Barnacle when it is distracting. Hovering over the space where Barnacle usually appears will make it visible even when hidden.
 
 ## Customizing Barnacle
+
+Barnacle can direct you to the source code for entries and templates if you add an entry to your `.env` file letting it know what file scheme to use to open files from your browser. For example, the following will work on macOS if you use VS Code as your editor:
+
+```sh
+BARNACLE_FILE_SCHEME=vscode://file
+```
 
 If you wish to create your own custom components, then first publish Barnacle's templates:
 
