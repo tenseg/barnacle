@@ -1,6 +1,6 @@
 # Barnacle
 
-Barnacle is a Statamic addon that creates and extensible toolbar on the front end of your site. Barnacle builds a toolbar using regular Statamic templates/views, which is super flexible, but also means that Barnacle is only useful on sites that are not caching their pages. This is a pretty big limitation, keep it in mind and consider alternatives (see the "Credits" section for some ideas). Barnacle is primarily intended as a developer tool, though on un-cached sites it can be helpful for site editors and authors as well.
+Barnacle is a Statamic addon that creates and extensible toolbar on the front end of your site. Barnacle builds a toolbar using regular Statamic templates/views, which is super flexible. Barnacle is primarily intended as a developer tool, though it can be helpful for site editors and authors as well.
 
 ## Features
 
@@ -8,27 +8,21 @@ Barnacle is a Statamic addon that creates and extensible toolbar on the front en
 - Customize which components are exposed to users by role
 - Allow users to customize which components they see
 
-## How to Install
+## Installation
 
-For now, Barnacle is hosted in a private Github repository without a listing in [packagist.org](packagist.org). Please contact us at [dev@tenseg.net](mailto:dev@tenseg.net?subject=Barnacle%20repo%20request) for access. Once you have access to the repository, you can add the following to your `composer.json` file to let composer know about it.
-
-```json
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://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@github.com/tenseg/barnacle.git"
-        }
-    ]
-```
-Note that you will probably have to weave these entries into `composer.json` around other existing entries, so modify as required. Also, this URL uses a read-only token that will expire in April 2026.
-
-After that is in place, you can install Barnacle via Composer as usual:
+Barnacle can be installed via Composer:
 
 ```sh
 composer require tenseg/barnacle
 ```
 
-## How to Use
+Barnacle can direct you to the source code for entries and templates if you add an entry to your `.env` file letting it know what file scheme to use to open files from your web browser. For example, add the following to `.env` to facilitate editing source files with VS Code on macOS:
+
+```sh
+BARNACLE_FILE_SCHEME=vscode://file
+```
+
+## Use
 
 Barnacle attaches a toolbar menu to the upper right corner of your website. You will only see this menu if one of the following is true:
 
@@ -36,17 +30,13 @@ Barnacle attaches a toolbar menu to the upper right corner of your website. You 
 2. You are logged in to your site;
 3. You have logged in to your site in the past week on the same browser.
 
-That third option is facilitated by a cookie Barnacle leaves in your browser when you log in. This option can be disabled in role permissions or by setting the `BARNACLE_COOKIE=` to nothing in your `.env` file. You can also choose to have Barnacle always appear by setting `BARNACLE_ALWAYS=true` in your `.env` file.
+That third option is facilitated by a cookie Barnacle leaves in your browser when you log in. This option can be disabled in role permissions or by setting the `BARNACLE_COOKIE=` to nothing in your `.env` file. If you want to customize the name of the cookie Barnacle uses for this purpose, just put a value into the `.env` file such as `BARNACLE_COOKIE=mysillycookiename`. 
 
-Each user can set their own preferences to hide Barnacle components they don't wish to see. Users can also click on the "pin" icon to hide Barnacle when it is distracting. Hovering over the space where Barnacle usually appears will make it visible even when hidden.
+You can also choose to have Barnacle always appear by setting `BARNACLE_ALWAYS=true` in your `.env` file.
 
-## Customizing Barnacle
+Each user can set their own preferences in the Statamic control panel to hide Barnacle components they don't wish to see. Users can also click on the "pin" icon to hide Barnacle when it is distracting. Hovering over the space where Barnacle usually appears will make it visible even when hidden.
 
-Barnacle can direct you to the source code for entries and templates if you add an entry to your `.env` file letting it know what file scheme to use to open files from your browser. For example, the following will work on macOS if you use VS Code as your editor:
-
-```sh
-BARNACLE_FILE_SCHEME=vscode://file
-```
+## Customization
 
 If you wish to create your own custom components, then first publish Barnacle's templates:
 
