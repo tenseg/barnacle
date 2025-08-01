@@ -2,6 +2,8 @@
 
 namespace Tenseg\Barnacle\Tags;
 
+use Composer\InstalledVersions;
+use Illuminate\Support\Facades\Log;
 use Statamic\Auth\User;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Preference;
@@ -10,8 +12,57 @@ use Statamic\Tags\Tags;
 
 class Barnacle extends Tags
 {
+    public function __construct()
+    {
+        // do nothing
+    }
+
+    protected function getVersion(): string
+    {
+        if (! InstalledVersions::isInstalled('tenseg/barnacle')) {
+            return '';
+        }
+
+        return InstalledVersions::getPrettyVersion('tenseg/barnacle');
+    }
+
+    protected function ensureLeadingSlash($path)
+    {
+        if (substr($path, 0, 1) !== '/') {
+            $path = '/'.$path;
+        }
+
+        return $path;
+    }
+
+    protected function isEnabled(): bool
+    {
+        $cookie = null;
+        if (Preference::get('barnacle_disabled', true)) {
+            if ($cname = config('barnacle.cookie', '')) {
+                $cookie = request()->cookie($cname);
+            }
+        }
+
+        return config('barnacle.always') ?? $cookie ?? config('app.debug', false);
+    }
+
     public function index(): string
     {
+        Log::debug('barnacle tag called');
+
+        if (! $this->isEnabled()) {
+            return '';
+        }
+
+        if (request()->query->has('live-preview')) {
+            return '';
+        }
+
+        if (app()->runningInConsole()) {
+            return '';
+        }
+
         $user = User::current();
         $components = [];
         if ($user) {
@@ -44,9 +95,9 @@ class Barnacle extends Tags
                 'path' => $path,
                 'site' => $site,
                 'entry' => $entry,
-                'options' => config('barnacle.options'),
                 'components' => $components,
-                'open_class' => $open,
+                'options' => config('barnacle.options'),
+                'open' => $open,
                 'version' => $this->getVersion(),
             ];
 

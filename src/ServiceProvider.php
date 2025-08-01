@@ -2,6 +2,7 @@
 
 namespace Tenseg\Barnacle;
 
+use Illuminate\Support\Facades\Log;
 use Statamic\Providers\AddonServiceProvider;
 use Tenseg\Barnacle\Middleware\BarnacleInject;
 use Tenseg\Barnacle\Middleware\BarnaclePermissions;
@@ -15,6 +16,8 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon()
     {
+        Log::debug('barnacle addon booted');
+
         $this->mergeConfigFrom(__DIR__.'/../config/barnacle.php', 'barnacle');
 
         if ($this->app->runningInConsole()) {

@@ -51,6 +51,7 @@ class BarnacleInjectController extends Controller
      */
     public function inject(Response $response): void
     {
+        return;
         if ($barnacle = $this->content()) {
             $content = $response->getContent();
             if (! $pos = mb_strripos($content, '</body>')) {
