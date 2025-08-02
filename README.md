@@ -16,6 +16,8 @@ Barnacle can be installed via Composer:
 composer require tenseg/barnacle
 ```
 
+Then add the `{{ barnacle }}` tag to your Antlers layout just before you closing `</body>` tag.
+
 Barnacle can direct you to the source code for entries and templates if you add an entry to your `.env` file letting it know what file scheme to use to open files from your web browser. For example, add the following to `.env` to facilitate editing source files with VS Code on macOS:
 
 ```sh

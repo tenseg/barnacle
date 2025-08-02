@@ -49,7 +49,7 @@ class Barnacle extends Tags
 
     public function index(): string
     {
-        Log::debug('barnacle tag called');
+        Log::debug('barnacle tag called', ['options' => config('barnacle.options')]);
 
         if (! $this->isEnabled()) {
             return '';
@@ -97,6 +97,7 @@ class Barnacle extends Tags
                 'entry' => $entry,
                 'components' => $components,
                 'options' => config('barnacle.options'),
+                'source_path' => $entry ? $entry->path() : '',
                 'open' => $open,
                 'version' => $this->getVersion(),
             ];
