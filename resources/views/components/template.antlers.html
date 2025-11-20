@@ -1,16 +1,17 @@
-{{ if template }}
-    {{? $base = resource_path('views') . "/$template" ?}}
+{{ if logged_in }}
+    {{? $active_template = $template ?? "default" ?}}
+    {{? $base = resource_path('views') . "/$active_template" ?}}
     {{? $path = file_exists("$base.antlers.html") ? "$base.antlers.html" : (
-		file_exists("$base.antlers.php") ? "$base.antlers.php" : (
-			file_exists("$base.blade.php") ? "$base.blade.php" : ''
-		)
-	) ?}}
+        file_exists("$base.antlers.php") ? "$base.antlers.php" : (
+            file_exists("$base.blade.php") ? "$base.blade.php" : ''
+        )
+    ) ?}}
     <a
         {{ if barnacle.options.file_scheme && $path }}
-			href="{{ barnacle.options.file_scheme }}{{ $path }}"
-		{{ /if }}
+            href="{{ barnacle.options.file_scheme }}{{ $path }}"
+        {{ /if }}
         class="barnacle-component"
-        title="Edit {{ template }} template file"
+        title="Edit {{ active_template }} template file"
     >
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
             <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
@@ -18,6 +19,6 @@
                 <path d="m10.634 11.056l1.414-1.415s.354-3.182-3.182-6.717l1.06-1.06l8.486 5.656l-1.06 1.06l1.413 1.415l1.061-1.06l2.475 2.474l-4.95 4.95l-2.475-2.475l1.061-1.06l-1.414-1.415l-1.768 1.768z" />
             </g>
         </svg>
-        <span class="barnacle-label">{{ template }}</span>
+        <span class="barnacle-label">{{ active_template }}</span>
     </a>
 {{ /if }}
