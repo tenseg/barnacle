@@ -1,8 +1,8 @@
 {{ if logged_in && blueprint }}
     {{ blue_link = "" }}
-    {{ if collection }}
+    {{ if is_entry && collection }}
         {{ blue_link = {{ route:statamic.cp.collections.blueprints.edit collection="{{ collection }}" blueprint="{{ blueprint }}" }} }}
-    {{ else if taxonomy }}
+    {{ else if is_term && taxonomy }}
         {{ blue_link = {{ route:statamic.cp.taxonomies.blueprints.edit taxonomy="{{ taxonomy }}" blueprint="{{ blueprint }}" }} }}
     {{ /if }}
     {{ if blue_link }}
