@@ -1,32 +1,32 @@
 {{?
 	// this PHP finds out the name of the current git branch
 	// and chooses a color based on whether it is the main branch
-    $style = "";
-    $branch = "";
-	$color = "";
-    $git_file = base_path() . "/.git/HEAD";
-    if (file_exists($git_file)) {
-        $color = "#FF88FF";
-        if ($gitinfo = file($git_file)) {
-            $exp = explode("/", $gitinfo[0], 3);
-            $branch = trim( $exp[2] );
-            if ($branch == "main") {
-                $color = "#44CC66";
+    $barnacle_style = "";
+    $barnacle_branch = "";
+	$barnacle_color = "";
+    $barnacle_git_file = base_path() . "/.git/HEAD";
+    if (file_exists($barnacle_git_file)) {
+        $barnacle_color = "#FF88FF";
+        if ($barnacle_gitinfo = file($barnacle_git_file)) {
+            $barnacle_exp = explode("/", $barnacle_gitinfo[0], 3);
+            $barnacle_branch = trim( $barnacle_exp[2] );
+            if ($barnacle_branch == "main") {
+                $barnacle_color = "#44CC66";
             }
-            $style = "style=\"--color-background: $color; --color-text: #000000;; font-weight: 900;\"";
+            $barnacle_style = "style=\"--color-background: $barnacle_color; --color-text: #000000;; font-weight: 900;\"";
         }
     }
 ?}}
-{{ if color }}
+{{ if barnacle_color }}
 	{{ push:barnacle }}
 		<style>
 			#barnacle {
-				--color-bottom: {{ $color }};
+				--color-bottom: {{ $barnacle_color }};
 			}
 		</style>
 	{{ /push:barnacle }}
-	<a class="barnacle-component" {{ $style }}
-		title="Git {{ $branch }} branch" >
+	<a class="barnacle-component" {{ $barnacle_style }}
+		title="Git {{ $barnacle_branch }} branch" >
 		<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
 			<path
 				fill="none"
@@ -37,6 +37,6 @@
 				d="M17 7a2 2 0 1 0 0-4a2 2 0 0 0 0 4M7 7a2 2 0 1 0 0-4a2 2 0 0 0 0 4m0 14a2 2 0 1 0 0-4a2 2 0 0 0 0 4M7 7v10M17 7v1c0 2.5-2 3-2 3l-6 2s-2 .5-2 3v1"
 			/>
 		</svg>
-		<span class="barnacle-label">{{ $branch }}</span>
+		<span class="barnacle-label">{{ $barnacle_branch }}</span>
 	</a>
 {{ /if}}
