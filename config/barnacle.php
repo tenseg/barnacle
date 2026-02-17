@@ -52,7 +52,6 @@ return [
         [
             'edit' => 'Edit entry in control panel',
             'md' => 'Open entry source',
-            'blueprint' => 'Edit blueprint',
             'template' => 'Open template source',
             'collection' => 'Go to collection',
             'new' => 'Create new entry',
