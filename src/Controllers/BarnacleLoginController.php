@@ -18,7 +18,7 @@ class BarnacleLoginController extends Controller
             return false;
         }
 
-        if (! $user->can('access cp') || ! $user->can('use barncale cookie')) {
+        if (! $user->can('access cp') || ! $user->can('use barnacle cookie')) {
             return false;
         }
 

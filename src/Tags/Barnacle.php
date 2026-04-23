@@ -49,7 +49,7 @@ class Barnacle extends Tags
 
     public function index(): string
     {
-        Log::debug('barnacle tag called', ['options' => config('barnacle.options')]);
+        // Log::debug('barnacle tag called', ['options' => config('barnacle.options')]);
 
         if (! $this->isEnabled()) {
             return '';

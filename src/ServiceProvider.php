@@ -15,7 +15,7 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon()
     {
-        Log::debug('barnacle addon booted');
+        // Log::debug('barnacle addon booted');
 
         $this->mergeConfigFrom(__DIR__.'/../config/barnacle.php', 'barnacle');
 
