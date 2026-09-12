@@ -1,6 +1,6 @@
 # Barnacle
 
-Barnacle is a Statamic addon that creates and extensible toolbar on the front end of your site. Barnacle builds a toolbar using regular Statamic templates/views, which is super flexible. Barnacle is primarily intended as a developer tool, though it can be helpful for site editors and authors as well.
+Barnacle is a Statamic addon that creates an extensible toolbar on the front end of your site. Barnacle builds a toolbar using regular Statamic templates/views, which is super flexible. Barnacle is primarily intended as a developer tool, though it can be helpful for site editors and authors as well.
 
 ## Features
 
